@@ -41,32 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'apikafka.apps.ApikafkaConfig',
     'corsheaders',
-    'logpipe',
     'colorfield',
-
 ]
 
-
-LOGPIPE = {
-
-    # Required Settings
-
-    'OFFSET_BACKEND': 'logpipe.backend.kafka.ModelOffsetStore',
-    'CONSUMER_BACKEND': 'logpipe.backend.kafka.Consumer',
-    'PRODUCER_BACKEND': 'logpipe.backend.kafka.Producer',
-    'KAFKA_BOOTSTRAP_SERVERS': [
-        'kafka:9092'
-    ],
-    'KAFKA_CONSUMER_KWARGS': {
-        'group_id': 'django-logpipe',
-    },
-
-    # Optional Settings
-    # 'KAFKA_SEND_TIMEOUT': 10,
-    # 'KAFKA_MAX_SEND_RETRIES': 0,
-    # 'MIN_MESSAGE_LAG_MS': 0,
-    # 'DEFAULT_FORMAT': 'json',
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,8 +98,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'pykafkadb',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'PORT': 27017,
+        # 'USER': 'root',
+        # 'PASSWORD': 'mongoadmin',
+        # 'AUTH_SOURCE': 'admin',
+        # 'AUTH_MECHANISM': 'SCRAM-SHA-1',
     }
 }
 

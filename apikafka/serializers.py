@@ -8,6 +8,12 @@ class PersonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ['uuid', 'name', 'color']
 
+class ColortrendsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Colortrends
+        fields = ['uuid', 'name', 'color']
+
  
 class MessagesSerializer(serializers.ModelSerializer):
  

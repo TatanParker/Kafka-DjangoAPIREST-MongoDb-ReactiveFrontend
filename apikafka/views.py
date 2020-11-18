@@ -6,7 +6,7 @@ from rest_framework import generics
 
 from .models import *
 from .serializers import *
-from .producer import kafka_send, kafka_consumer
+from .producer import kafka_send
 
 
 class PersonAPIView(generics.ListCreateAPIView):
@@ -14,28 +14,29 @@ class PersonAPIView(generics.ListCreateAPIView):
 	serializer_class = PersonSerializer
 
 	def post(self, request, *args, **kwargs):
-		topic = 'color'
+		topic = 'colortrends'
 		name = request.data.get("name")
 		color = request.data.get("color")
 
 		kafka_send(topic,name,color)
 
-		colors = kafka_consumer_colors()
-		last_messages = kafka_consumer()
+		colors = kafka_synchronous_colors()
 
 		self.create(request, *args, **kwargs)
-		return Response({"success": True, "name" : name, "colors" : colors, "message": last_messages}, status=status.HTTP_201_CREATED)
+		return Response({"success": True, "name" : name, "colors" : colors}, status=status.HTTP_201_CREATED)
+
+class ColortrendsAPIView(generics.ListCreateAPIView):
+	queryset = Colortrends.objects.all()
+	serializer_class = ColortrendsSerializer
+
+	def list(self, request):
+		colors = kafka_consumercolor_last()
+
+		return Response({"colors": colors}, status=status.HTTP_201_CREATED)
 
 
-def kafka_consumer_colors():
-	collection = Person.objects.order_by('-id')[:10]
-	lista = []
-	for col in collection:
-		lista.append(col.color)
-	return lista
-
-def kafka_consumer():
-	collection = Person.objects.order_by('-id')[:5]
+def kafka_synchronous_colors():
+	collection = Person.objects.order_by('-id')[:2]
 	lista = []
 	for col in collection:
 		lista.append({
@@ -45,6 +46,16 @@ def kafka_consumer():
 	return lista
 
 
+def kafka_consumercolor_last():
+	raw = Colortrends.objects.all()
+	collection = raw[(len(raw)-2):(len(raw))]
+	lista = []
+	for col in collection:
+		lista.append({
+			'name' : col.name,
+			'color': col.color
+			})
+	return lista
 
 
 class MessagesList(generics.ListCreateAPIView):

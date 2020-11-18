@@ -14,8 +14,5 @@ urlpatterns = [
  	path('api/messages', views.MessagesList.as_view(),name = 'list-create'),
  	path('api/messages/<int:pk>/', views.MessagesList.as_view(),name = 'list-create'),
  	path('api/person/', views.PersonAPIView.as_view(),name = 'color-create'),
-
-    # url(r'^api/messages$', views.messages_list),
-    # url(r'^api/messages(?P<pk>[0-9]+)$', views.messages_detail),
-    # url(r'^api/messages/published$', views.messages_list_published)
+ 	path('api/consumertrend/', views.ColortrendsAPIView.as_view(),name = 'color-get'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
