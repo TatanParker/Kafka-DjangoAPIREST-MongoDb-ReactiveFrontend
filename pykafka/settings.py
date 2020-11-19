@@ -101,7 +101,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 27017,
         # 'USER': 'root',
-        # 'PASSWORD': 'mongoadmin',
+        # 'PASSWORD': 'adminuser',
         # 'AUTH_SOURCE': 'admin',
         # 'AUTH_MECHANISM': 'SCRAM-SHA-1',
     }
